@@ -8,7 +8,7 @@ homepage = "https://github.com/miathedev/adafruit-aht10"
 repository = "https://github.com/miathedev/adafruit-aht10"
 readme = "README.md"
 documentation = "https://docs.rs/adafruit-aht10"
-keywords = ["embedded", "embedded-hal", "i2c", "temperature", "humidity", "sensor", "aht10", "adafruit"]
+keywords = ["embedded-hal", "i2c", "temperature", "humidity", "aht10"]
 categories = ["embedded", "no-std"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
