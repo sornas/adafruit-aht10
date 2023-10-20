@@ -1,4 +1,4 @@
-use embedded_hal::blocking::i2c::{Write, Read};
+use embedded_hal::blocking::i2c::{Read, Write};
 
 pub struct AdafruitAHT10<I2C> {
     i2c: I2C,
@@ -10,6 +10,14 @@ pub enum Aht10Error {
     CalibrationFailed,
     OtherError,
 }
+
+impl std::fmt::Display for Aht10Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
+
+impl std::error::Error for Aht10Error {}
 
 const AHT10_I2CADDR_DEFAULT: u8 = 0x38;
 const AHT10_CMD_SOFTRESET: u8 = 0xBA;
@@ -84,14 +92,13 @@ where
         hata <<= 4;
         hata |= (data[3] >> 4) as u32;
         let humidity = (hata as f32 * 100.0) / (0x100000 as f32);
-        
+
         let mut tdata: u32 = (data[3] & 0x0F) as u32;
         tdata <<= 8;
         tdata |= data[4] as u32;
         tdata <<= 8;
         tdata |= data[5] as u32;
         let temperature = ((tdata as f32) * 200.0 / 0x100000 as f32) - 50.0;
-
 
         Ok((humidity, temperature))
     }
