@@ -1,4 +1,4 @@
-use embedded_hal::blocking::i2c::{Read, Write};
+#![no_std]
 
 pub struct AdafruitAHT10<I2C> {
     i2c: I2C,
@@ -11,13 +11,13 @@ pub enum Aht10Error {
     OtherError,
 }
 
-impl std::fmt::Display for Aht10Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Display for Aht10Error {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "{self:?}")
     }
 }
 
-impl std::error::Error for Aht10Error {}
+impl core::error::Error for Aht10Error {}
 
 const AHT10_I2CADDR_DEFAULT: u8 = 0x38;
 const AHT10_CMD_SOFTRESET: u8 = 0xBA;
@@ -26,9 +26,9 @@ const AHT10_CMD_TRIGGER: u8 = 0xAC;
 const AHT10_STATUS_BUSY: u8 = 0x80;
 const AHT10_STATUS_CALIBRATED: u8 = 0x08;
 
-impl<I2C, E> AdafruitAHT10<I2C>
+impl<I2C> AdafruitAHT10<I2C>
 where
-    I2C: Write<Error = E> + Read<Error = E>,
+    I2C: embedded_hal::i2c::I2c,
 {
     pub fn new(i2c: I2C) -> Self {
         AdafruitAHT10 { i2c }
